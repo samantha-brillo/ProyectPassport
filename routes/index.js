@@ -16,7 +16,7 @@ router.get("/signup", (req, res) => {
 
 router.post("/signup", async (req, res) => {
   const { email, username, password } = req.body;
-
+  console.log(req.body);
   const hashPass = bcrypt.hashSync(password, bcrypt.genSaltSync(12));
 
   await User.create({
@@ -67,6 +67,18 @@ router.get(
     successRedirect: "/secret",
   })
 );
+
+router.get(
+  "/auth/facebook",
+  passport.authenticate("facebook", { scope: ["email"] })
+),
+  router.get(
+    "/auth/facebook/callback",
+    passport.authenticate("facebook", {
+      failureRedirect: "/login",
+      successRedirect: "/secret",
+    })
+  );
 
 router.get("/logout", (req, res) => {
   req.logout();

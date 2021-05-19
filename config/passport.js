@@ -3,6 +3,33 @@ const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("../models/User");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_APP_ID,
+      clientSecret: process.env.FACEBOOK_APP_SECRET,
+      callbackURL: "/auth/facebook/callback",
+      //Aqui es necesario el scope a diferencia de la de google
+      profileFields: ["id", "emails", "gender", "link", "name", "photos"],
+    },
+    async (accessToken, refreshToken, profile, cb) => {
+      console.log(profile);
+      const user = await User.findOne({ facebookId: profile.id });
+      if (!user) {
+        const newUser = await User.create({
+          facebookId: profile.id,
+          email: profile.emails[0].value,
+          username: profile.name.givenName,
+          image: profile.photos[0].value,
+        });
+        return cb(null, newUser);
+      }
+      return cb(null, user);
+    }
+  )
+);
 
 passport.use(
   new GoogleStrategy(
@@ -12,7 +39,6 @@ passport.use(
       callbackURL: "/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, cb) => {
-      console.log(profile);
       const user = await User.findOne({ googleId: profile.id });
       if (!user) {
         const newUser = await User.create({

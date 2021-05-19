@@ -16,6 +16,7 @@ const userSchema = new Schema(
       type: String,
     },
     googleId: String,
+    facebookId: String,
   },
   {
     timestamps: true,
