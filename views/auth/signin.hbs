@@ -1,7 +1,35 @@
-<form action="/signin" method="post">
-  <input name="email" type="text" placeholder="email">
-  <br>
-  <input name="password" type="password" placeholder="******">
-  <br>
-  <button>Signin</button>
-</form>
+<div class="container">
+  <div class="card">
+    <br />
+    <div class="container">
+      <form action="/signin" method="post">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email:</label>
+          <input
+            class="form-control"
+            name="email"
+            type="text"
+            placeholder="example@email.com"
+          />
+          <br />
+          <label
+            for="exampleInputPassword1"
+            class="form-label"
+          >Password:</label>
+          <input
+            class="form-control"
+            name="password"
+            type="password"
+            placeholder="******"
+          />
+          <br />
+        </div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+        <br />
+        <br />
+      </form>
+    </div>
+  </div>
+  <hr />
+  <a href="/auth/google" class="btn btn-large">signin with google</a>
+</div>
